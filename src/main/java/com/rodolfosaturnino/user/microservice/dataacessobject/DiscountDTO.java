@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DiscountDTO {
 
-	private Double price;
+	private Double pct;
     private Integer valueInCents;
 }
