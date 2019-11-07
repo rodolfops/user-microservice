@@ -1,7 +1,5 @@
 package com.rodolfosaturnino.user.microservice.service;
 
-import java.time.ZonedDateTime;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,19 +19,18 @@ public class DiscountService {
 		User user = userRepository.findById(userId).orElseThrow(
 				() -> new EntityNotFoundException(
 						"Could not find user with id: " + userId));
-		ZonedDateTime today = ZonedDateTime.now();
 		ProductDTO product = getProductWithGrpc(productId);
 		return getDiscount(product, user);
 	}
 
-	private double getDiscount(ProductDTO product, User user) {
+	public double getDiscount(ProductDTO product, User user) {
 		//check if it is user birthday 
 		//check if it is black friday by last friday of november
 		//return it at max 10%
-		return 0;
+		return 0.0;
 	}
 
-	private ProductDTO getProductWithGrpc(Long productId) {
+	public ProductDTO getProductWithGrpc(Long productId) {
 		return new ProductDTO(Long.toString(productId),19000,"product","product test",new DiscountDTO());
 	}
 }
