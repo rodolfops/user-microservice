@@ -7,27 +7,23 @@ import com.rodolfosaturnino.user.microservice.dataacessobject.DiscountDTO;
 import com.rodolfosaturnino.user.microservice.dataacessobject.ProductDTO;
 import com.rodolfosaturnino.user.microservice.domain.User;
 import com.rodolfosaturnino.user.microservice.exception.EntityNotFoundException;
-import com.rodolfosaturnino.user.microservice.repository.UserRepository;
+import com.rodolfosaturnino.user.microservice.service.discountchain.DiscountBuilder;
 
 @Service
 public class DiscountService {
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userService;
 	
-	public double getDiscount(Long productId, Long userId) throws EntityNotFoundException {
-		User user = userRepository.findById(userId).orElseThrow(
-				() -> new EntityNotFoundException(
-						"Could not find user with id: " + userId));
+	public DiscountDTO calculateDiscount(Long productId, Long userId) throws EntityNotFoundException {
+		User user = userService.findUser(userId);
 		ProductDTO product = getProductWithGrpc(productId);
 		return getDiscount(product, user);
 	}
 
-	public double getDiscount(ProductDTO product, User user) {
-		//check if it is user birthday 
-		//check if it is black friday by last friday of november
-		//return it at max 10%
-		return 0.0;
+	public DiscountDTO getDiscount(ProductDTO product, User user) {
+		DiscountBuilder discountBuilder = new DiscountBuilder();
+		return discountBuilder.getDiscountDTO(product, user);
 	}
 
 	public ProductDTO getProductWithGrpc(Long productId) {

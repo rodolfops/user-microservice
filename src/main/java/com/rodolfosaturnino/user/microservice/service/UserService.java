@@ -71,4 +71,11 @@ public class UserService {
 						"Could not find entity with id: " + id));
 		userRepository.deleteById(id);
 	}
+
+	@Transactional
+	public User findUser(Long id) throws EntityNotFoundException {
+		return userRepository.findById(id).orElseThrow(
+				() -> new EntityNotFoundException(
+						"Could not find entity with id: " + id));
+	}
 }

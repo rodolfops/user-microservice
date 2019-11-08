@@ -53,6 +53,27 @@ public class UserServiceTest {
 	}
 	
 	@Test
+	public void findUserTest() throws EntityNotFoundException {
+		//given
+		User user = new User(1l, "Rodolfo", "Saturnino", ZonedDateTime.now());
+		Optional<User> optional = Optional.ofNullable(user);
+		given(userRepository.findById(1l)).willReturn(optional);
+		//when
+		User returnedUser = userService.findUser(1l);
+		//then
+		assertThat(returnedUser).isEqualTo(user);
+	}
+	
+	@Test(expected=EntityNotFoundException.class)
+	public void findUserTestWithUserNotFound() throws EntityNotFoundException {
+		//given
+		Optional<User> optional = Optional.empty();
+		given(userRepository.findById(1l)).willReturn(optional);
+		//when
+		userService.findUser(1l);
+	}
+	
+	@Test
 	public void saveTest() throws ConstraintsViolationException {
 		//given
 		ZonedDateTime now = ZonedDateTime.now();
