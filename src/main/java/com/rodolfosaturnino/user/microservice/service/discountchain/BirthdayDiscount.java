@@ -3,7 +3,7 @@ package com.rodolfosaturnino.user.microservice.service.discountchain;
 import java.time.ZonedDateTime;
 
 import com.rodolfosaturnino.user.microservice.dataacessobject.DiscountDTO;
-import com.rodolfosaturnino.user.microservice.dataacessobject.ProductDTO;
+import com.rodolfosaturnino.user.microservice.domain.Product;
 import com.rodolfosaturnino.user.microservice.domain.User;
 
 public class BirthdayDiscount extends DiscountHandler {
@@ -11,7 +11,7 @@ public class BirthdayDiscount extends DiscountHandler {
 	private static double BIRTHDAY_DISCOUNT = 0.05; 
 	
 	@Override
-	public DiscountDTO getDiscount(ProductDTO product, User user) {
+	public DiscountDTO getDiscount(Product product, User user) {
 		if(isUserBirthday(user)) {
 			int valueInCents = (int) Math.round(product.getPriceInCents() * BIRTHDAY_DISCOUNT);
 			return new DiscountDTO(BIRTHDAY_DISCOUNT, new Integer(valueInCents));

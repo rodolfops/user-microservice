@@ -1,7 +1,7 @@
 package com.rodolfosaturnino.user.microservice.service.discountchain;
 
 import com.rodolfosaturnino.user.microservice.dataacessobject.DiscountDTO;
-import com.rodolfosaturnino.user.microservice.dataacessobject.ProductDTO;
+import com.rodolfosaturnino.user.microservice.domain.Product;
 import com.rodolfosaturnino.user.microservice.domain.User;
 
 public class DiscountBuilder {
@@ -18,7 +18,7 @@ public class DiscountBuilder {
 		this.discountHandler = blackFridayDiscount;
 	}
 	
-	public DiscountDTO getDiscountDTO(ProductDTO product, User user) {
+	public DiscountDTO getDiscountDTO(Product product, User user) {
 		return this.discountHandler.getDiscount(product, user);
 	}
 }

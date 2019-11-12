@@ -40,7 +40,7 @@ public class UserServiceTest {
 	@Test
 	public void findAllTest() {
 		//given
-		User user = new User(1l, "Rodolfo", "Saturnino", ZonedDateTime.now());
+		User user = new User("5dc99d7f0ec11a53f8961192", "Rodolfo", "Saturnino", ZonedDateTime.now());
 		List<User> userList = new ArrayList<>();
 		Collections.addAll(userList, user);
 		Pageable pageable = PageRequest.of(0, 20);
@@ -55,11 +55,11 @@ public class UserServiceTest {
 	@Test
 	public void findUserTest() throws EntityNotFoundException {
 		//given
-		User user = new User(1l, "Rodolfo", "Saturnino", ZonedDateTime.now());
+		User user = new User("5dc99d7f0ec11a53f8961192", "Rodolfo", "Saturnino", ZonedDateTime.now());
 		Optional<User> optional = Optional.ofNullable(user);
-		given(userRepository.findById(1l)).willReturn(optional);
+		given(userRepository.findById("5dc99d7f0ec11a53f8961192")).willReturn(optional);
 		//when
-		User returnedUser = userService.findUser(1l);
+		User returnedUser = userService.findUser("5dc99d7f0ec11a53f8961192");
 		//then
 		assertThat(returnedUser).isEqualTo(user);
 	}
@@ -68,9 +68,9 @@ public class UserServiceTest {
 	public void findUserTestWithUserNotFound() throws EntityNotFoundException {
 		//given
 		Optional<User> optional = Optional.empty();
-		given(userRepository.findById(1l)).willReturn(optional);
+		given(userRepository.findById("5dc99d7f0ec11a53f8961192")).willReturn(optional);
 		//when
-		userService.findUser(1l);
+		userService.findUser("5dc99d7f0ec11a53f8961192");
 	}
 	
 	@Test
@@ -78,7 +78,7 @@ public class UserServiceTest {
 		//given
 		ZonedDateTime now = ZonedDateTime.now();
 		User userToCreate = new User("Rodolfo", "Saturnino", now);
-		User userCreated = new User(1l, "Rodolfo", "Saturnino", now);
+		User userCreated = new User("5dc99d7f0ec11a53f8961192", "Rodolfo", "Saturnino", now);
 		given(userRepository.save(userToCreate)).willReturn(userCreated);
 		//when
 		User userSaved = userService.save(userToCreate);
@@ -89,13 +89,13 @@ public class UserServiceTest {
 	@Test
 	public void updateTest() throws EntityNotFoundException {
 		//given
-		User user = new User(1l, "Rodolfo", "Pereira", ZonedDateTime.now());
+		User user = new User("5dc99d7f0ec11a53f8961192", "Rodolfo", "Pereira", ZonedDateTime.now());
 		Optional<User> optional = Optional.ofNullable(user);
-		User userAfterUpdate = new User(1l, "Rodolfo", "Saturnino", ZonedDateTime.now());
-		given(userRepository.findById(1l)).willReturn(optional);
+		User userAfterUpdate = new User("5dc99d7f0ec11a53f8961192", "Rodolfo", "Saturnino", ZonedDateTime.now());
+		given(userRepository.findById("5dc99d7f0ec11a53f8961192")).willReturn(optional);
 		given(userRepository.save(userAfterUpdate)).willReturn(userAfterUpdate);
 		//when
-		User newUser = userService.update(1l, userAfterUpdate);
+		User newUser = userService.update("5dc99d7f0ec11a53f8961192", userAfterUpdate);
 		//then
 		assertThat(newUser).isEqualTo(userAfterUpdate);
 	}
@@ -104,9 +104,9 @@ public class UserServiceTest {
 	public void deleteTestWithException() throws EntityNotFoundException {
 		//given
 		Optional<User> optional = Optional.empty();
-		given(userRepository.findById(1l)).willReturn(optional);
+		given(userRepository.findById("5dc99d7f0ec11a53f8961192")).willReturn(optional);
 		//when
-		userService.delete(1l);
+		userService.delete("5dc99d7f0ec11a53f8961192");
 	}
 	
 }

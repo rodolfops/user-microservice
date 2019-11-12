@@ -2,39 +2,35 @@ package com.rodolfosaturnino.user.microservice.domain;
 
 import java.time.ZonedDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name="user")
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+@Document(collection="users")
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class User {
 
 	@Id
-	@GeneratedValue
-	private Long id;
+	private String id;
 	
-	@NonNull
-	@Column(name="first_name")
+	@Field(name="first_name")
 	private String firstName;
 	
-	@NonNull
-	@Column(name="last_name")
+	@Field(name="last_name")
 	private String lastName;
 	
-	@NonNull
-	@Column(name="date_of_birth")
+	@Field(name="date_of_birth")
 	private ZonedDateTime dateOfBirth;
 	
-	
+	public User(String firstName, String lastName, ZonedDateTime birthday) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		dateOfBirth = birthday;
+	}
 }

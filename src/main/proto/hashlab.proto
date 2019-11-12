@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option java_package = "com.rodolfosaturnino.user.microservice.service";
+
+// The discount service definition.
+service DiscountService {
+  // Retrieve discount for a user
+  rpc calculateDiscount(DiscountRequest) returns (DiscountReply) {}
+}
+
+message DiscountRequest {
+  string product_id = 1;
+  string user_id = 2;
+}
+
+// The response message containing the discount
+message DiscountReply {
+  repeated Discount discount = 1;
+}
+
+// The Discount
+message Discount {
+  string pct = 1;
+  int32 valueInCents = 2;
+}

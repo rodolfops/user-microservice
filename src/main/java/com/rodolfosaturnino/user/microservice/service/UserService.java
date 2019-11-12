@@ -23,8 +23,12 @@ public class UserService {
 	private static final Logger LOG = LoggerFactory
 			.getLogger(UserService.class);
 
+	private final UserRepository userRepository;
+	
 	@Autowired
-	private UserRepository userRepository;
+	public UserService(final UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
 	@Transactional
 	public List<User> findAll(Pageable pageable) {
@@ -49,14 +53,22 @@ public class UserService {
 	}
 
 	@Transactional
-	public User update(Long id, User userToUpdate)
+	public User update(String id, User userToUpdate)
 			throws EntityNotFoundException {
+		LOG.info("Pegar a data");
+		LOG.info("Date : {}", userToUpdate.getDateOfBirth());
 		return userRepository
 				.findById(id)
 				.map(user -> {
-					user.setFirstName(userToUpdate.getFirstName());
-					user.setLastName(userToUpdate.getLastName());
-					user.setDateOfBirth(userToUpdate.getDateOfBirth());
+					if(userToUpdate.getFirstName() != null && !userToUpdate.getFirstName().isEmpty()) {
+						user.setFirstName(userToUpdate.getFirstName());
+					}
+					if(userToUpdate.getLastName() != null && !userToUpdate.getLastName().isEmpty()) {
+						user.setLastName(userToUpdate.getLastName());
+					}
+					if(userToUpdate.getDateOfBirth() != null) {
+						user.setDateOfBirth(userToUpdate.getDateOfBirth());
+					}
 					return userRepository.save(user);
 				})
 				.orElseThrow(
@@ -65,7 +77,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public void delete(Long id) throws EntityNotFoundException {
+	public void delete(String id) throws EntityNotFoundException {
 		userRepository.findById(id).orElseThrow(
 				() -> new EntityNotFoundException(
 						"Could not find entity with id: " + id));
@@ -73,7 +85,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public User findUser(Long id) throws EntityNotFoundException {
+	public User findUser(String id) throws EntityNotFoundException {
 		return userRepository.findById(id).orElseThrow(
 				() -> new EntityNotFoundException(
 						"Could not find entity with id: " + id));
