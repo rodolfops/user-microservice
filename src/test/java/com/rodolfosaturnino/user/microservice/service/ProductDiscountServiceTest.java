@@ -16,10 +16,10 @@ import com.rodolfosaturnino.user.microservice.domain.Product;
 import com.rodolfosaturnino.user.microservice.domain.User;
 import com.rodolfosaturnino.user.microservice.exception.EntityNotFoundException;
 
-public class DiscountServiceTest {
+public class ProductDiscountServiceTest {
 
 	@InjectMocks
-	private DiscountService discountService;
+	private ProductDiscountService productDiscountService;
 	
 	@Mock
 	private UserService userService;
@@ -40,7 +40,7 @@ public class DiscountServiceTest {
 		given(productService.findProduct("5dc99d7f0ec11a53f8961192")).willReturn(product);
 		//given(discountService.getDiscount(1l, 1l)).willReturn(0.0);
 		//when
-		DiscountDTO discount = discountService.calculateDiscount("5dc99d7f0ec11a53f8961192", "5dc99d7f0ec11a53f8961192");
+		DiscountDTO discount = productDiscountService.calculateDiscount("5dc99d7f0ec11a53f8961192", "5dc99d7f0ec11a53f8961192");
 		//then
 		assertThat(discount.getPct()).isEqualTo(0.0);
 	}
@@ -54,7 +54,7 @@ public class DiscountServiceTest {
 		given(productService.findProduct("5dc99d7f0ec11a53f8961192")).willReturn(product);
 		//given(discountService.getDiscount(1l, 1l)).willReturn(0.0);
 		//when
-		DiscountDTO discount = discountService.calculateDiscount("5dc99d7f0ec11a53f8961192", "5dc99d7f0ec11a53f8961192");
+		DiscountDTO discount = productDiscountService.calculateDiscount("5dc99d7f0ec11a53f8961192", "5dc99d7f0ec11a53f8961192");
 		//then
 		assertThat(discount.getPct()).isEqualTo(0.05);
 	}

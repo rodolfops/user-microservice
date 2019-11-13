@@ -12,27 +12,33 @@ import com.rodolfosaturnino.user.microservice.exception.EntityNotFoundException;
 import com.rodolfosaturnino.user.microservice.service.discountchain.DiscountBuilder;
 
 @Service
-public class DiscountService {
+public class ProductDiscountService {
 	
-	private static final Logger log = LoggerFactory.getLogger(DiscountService.class);
+	private static final Logger log = LoggerFactory.getLogger(ProductDiscountService.class);
 
 	private final UserService userService;
 	private final ProductService productService;
 
 	@Autowired
-	public DiscountService(UserService userService,
+	public ProductDiscountService(UserService userService,
 			ProductService productService) {
 		this.userService = userService;
 		this.productService = productService;
 	}
 	
-	public DiscountDTO calculateDiscount(String productId, String userId) throws EntityNotFoundException {
-		log.info("Searching user with id: "+userId);
-		User user = userService.findUser(userId);
-		log.info("Searching product with id: "+productId);
-		Product product = productService.findProduct(productId);
-		log.info("===getting discount===");
-		return getDiscount(product, user);
+	public DiscountDTO calculateDiscount(String productId, String userId) {
+		try {
+			log.info("Searching user with id: "+userId);
+			User user = userService.findUser(userId);
+			log.info("Searching product with id: "+productId);
+			Product product = productService.findProduct(productId);
+			log.info("===getting discount===");
+			return getDiscount(product, user);
+		} catch (EntityNotFoundException e) {
+			log.error(e.getMessage());
+//			e.printStackTrace();
+		}
+		return new DiscountDTO(0.0,new Integer(0));
 	}
 
 	public DiscountDTO getDiscount(Product product, User user) {

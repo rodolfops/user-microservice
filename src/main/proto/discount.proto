@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option java_package = "com.rodolfosaturnino.user.microservice.grpc";
+
+option java_multiple_files = true;
+
+message DiscountRequest {
+  string product = 1;
+  string user = 2;
+}
+
+// The response message containing the discount
+message DiscountReply {
+  double pct = 1;
+  int32 valueInCents = 2;
+}
+
+// The discount service definition.
+service DiscountService {
+  // Retrieve discount for a user
+  rpc calculateDiscount(DiscountRequest) returns (DiscountReply);
+}
