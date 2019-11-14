@@ -55,8 +55,6 @@ public class UserService {
 	@Transactional
 	public User update(String id, User userToUpdate)
 			throws EntityNotFoundException {
-		LOG.info("Pegar a data");
-		LOG.info("Date : {}", userToUpdate.getDateOfBirth());
 		return userRepository
 				.findById(id)
 				.map(user -> {

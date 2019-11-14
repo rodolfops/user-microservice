@@ -12,7 +12,7 @@ public class BirthdayDiscount extends DiscountHandler {
 	
 	@Override
 	public DiscountDTO getDiscount(Product product, User user) {
-		if(isUserBirthday(user)) {
+		if(user != null && isUserBirthday(user)) {
 			int valueInCents = (int) Math.round(product.getPriceInCents() * BIRTHDAY_DISCOUNT);
 			return new DiscountDTO(BIRTHDAY_DISCOUNT, new Integer(valueInCents));
 		} else {

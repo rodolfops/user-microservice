@@ -8,7 +8,8 @@ public class NoDiscount extends DiscountHandler {
 
 	@Override
 	public DiscountDTO getDiscount(Product product, User user) {
-		return new DiscountDTO(0.0, new Integer(0));
+		double discount = 0;
+		return new DiscountDTO(discount, new Integer(0));
 	}
 
 }

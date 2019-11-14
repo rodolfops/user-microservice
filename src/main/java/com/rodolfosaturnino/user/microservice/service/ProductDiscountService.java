@@ -28,17 +28,16 @@ public class ProductDiscountService {
 	
 	public DiscountDTO calculateDiscount(String productId, String userId) {
 		try {
-			log.info("Searching user with id: "+userId);
-			User user = userService.findUser(userId);
-			log.info("Searching product with id: "+productId);
+			User user = null;
+			if(userId != null && !userId.isEmpty()) {
+				user = userService.findUser(userId);
+			} 
 			Product product = productService.findProduct(productId);
-			log.info("===getting discount===");
 			return getDiscount(product, user);
 		} catch (EntityNotFoundException e) {
 			log.error(e.getMessage());
-//			e.printStackTrace();
 		}
-		return new DiscountDTO(0.0,new Integer(0));
+		return new DiscountDTO(0.0, new Integer(0));
 	}
 
 	public DiscountDTO getDiscount(Product product, User user) {
