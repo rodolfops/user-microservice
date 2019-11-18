@@ -3,7 +3,9 @@ package com.rodolfosaturnino.user.microservice.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Could not find entity with id.")
+import com.rodolfosaturnino.user.microservice.errors.ErrorMessage;
+
+@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = ErrorMessage.ERROR_ENTITY_NOT_FOUND)
 public class EntityNotFoundException extends Exception
 {
     static final long serialVersionUID = -3387516993334229948L;

@@ -5,6 +5,7 @@ import static org.mockito.BDDMockito.given;
 
 import java.time.ZonedDateTime;
 
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -34,13 +35,15 @@ public class ProductDiscountServiceTest {
 	@Test
 	public void getDiscountWithoutPct() throws EntityNotFoundException {
 		//given
-		User user = new User("5dc99d7f0ec11a53f8961192", "Rodolfo", "Saturnino", ZonedDateTime.now().minusDays(1));
-		given(userService.findUser("5dc99d7f0ec11a53f8961192")).willReturn(user);
-		Product product = new Product("5dc99d7f0ec11a53f8961192",19000,"product","product test");
-		given(productService.findProduct("5dc99d7f0ec11a53f8961192")).willReturn(product);
+		ObjectId id = new ObjectId();
+		User user = new User(id.toString(), "UserName", "UserLastName", ZonedDateTime.now().minusDays(1));
+		given(userService.findUser(id.toString())).willReturn(user);
+		ObjectId productId = new ObjectId();
+		Product product = new Product(productId.toString(),19000, "product", "product test");
+		given(productService.findProduct(productId.toString())).willReturn(product);
 		//given(discountService.getDiscount(1l, 1l)).willReturn(0.0);
 		//when
-		DiscountDTO discount = productDiscountService.calculateDiscount("5dc99d7f0ec11a53f8961192", "5dc99d7f0ec11a53f8961192");
+		DiscountDTO discount = productDiscountService.calculateDiscount(productId.toString(), id.toString());
 		//then
 		assertThat(discount.getPct()).isEqualTo(0.0);
 	}
@@ -48,30 +51,17 @@ public class ProductDiscountServiceTest {
 	@Test
 	public void getDiscountBirthday() throws EntityNotFoundException {
 		//given
-		User user = new User("5dc99d7f0ec11a53f8961192", "Rodolfo", "Saturnino", ZonedDateTime.now());
-		given(userService.findUser("5dc99d7f0ec11a53f8961192")).willReturn(user);
-		Product product = new Product("5dc99d7f0ec11a53f8961192",19000,"product","product test");
-		given(productService.findProduct("5dc99d7f0ec11a53f8961192")).willReturn(product);
+		ObjectId id = new ObjectId();
+		User user = new User(id.toString(), "UserName", "UserLastName", ZonedDateTime.now());
+		given(userService.findUser(id.toString())).willReturn(user);
+		ObjectId productId = new ObjectId();
+		Product product = new Product(productId.toString(),19000,"product","product test");
+		given(productService.findProduct(productId.toString())).willReturn(product);
 		//given(discountService.getDiscount(1l, 1l)).willReturn(0.0);
 		//when
-		DiscountDTO discount = productDiscountService.calculateDiscount("5dc99d7f0ec11a53f8961192", "5dc99d7f0ec11a53f8961192");
+		DiscountDTO discount = productDiscountService.calculateDiscount(productId.toString(), id.toString());
 		//then
 		assertThat(discount.getPct()).isEqualTo(0.05);
 	}
-	
-	/*@Test
-	public void getDiscountBlackFriday() throws EntityNotFoundException {
-		//given
-		User user = new User(1l, "Rodolfo", "Saturnino", ZonedDateTime.now());
-		Optional<User> optional = Optional.ofNullable(user);
-		given(userRepository.findById(1l)).willReturn(optional);
-		//ProductDTO product = new ProductDTO("1",19000,"product","product test",new DiscountDTO());
-		//given(discountService.getProductWithGrpc(1l)).willReturn(product);
-		//given(discountService.getDiscount(1l, 1l)).willReturn(0.0);
-		//when
-		double discount = discountService.getDiscount(1l, 1l);
-		//then
-		assertThat(discount).isEqualTo(0.0);
-	}*/
 	
 }

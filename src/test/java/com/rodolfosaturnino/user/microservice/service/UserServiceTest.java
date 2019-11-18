@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -40,7 +41,8 @@ public class UserServiceTest {
 	@Test
 	public void findAllTest() {
 		//given
-		User user = new User("5dc99d7f0ec11a53f8961192", "Rodolfo", "Saturnino", ZonedDateTime.now());
+		ObjectId id = new ObjectId();
+		User user = new User(id.toString(), "TestName", "TestLastName", ZonedDateTime.now());
 		List<User> userList = new ArrayList<>();
 		Collections.addAll(userList, user);
 		Pageable pageable = PageRequest.of(0, 20);
@@ -55,11 +57,12 @@ public class UserServiceTest {
 	@Test
 	public void findUserTest() throws EntityNotFoundException {
 		//given
-		User user = new User("5dc99d7f0ec11a53f8961192", "Rodolfo", "Saturnino", ZonedDateTime.now());
+		ObjectId id = new ObjectId();
+		User user = new User(id.toString(), "TestName", "TestLastName", ZonedDateTime.now());
 		Optional<User> optional = Optional.ofNullable(user);
-		given(userRepository.findById("5dc99d7f0ec11a53f8961192")).willReturn(optional);
+		given(userRepository.findById(id.toString())).willReturn(optional);
 		//when
-		User returnedUser = userService.findUser("5dc99d7f0ec11a53f8961192");
+		User returnedUser = userService.findUser(id.toString());
 		//then
 		assertThat(returnedUser).isEqualTo(user);
 	}
@@ -67,18 +70,20 @@ public class UserServiceTest {
 	@Test(expected=EntityNotFoundException.class)
 	public void findUserTestWithUserNotFound() throws EntityNotFoundException {
 		//given
+		ObjectId id = new ObjectId();
 		Optional<User> optional = Optional.empty();
-		given(userRepository.findById("5dc99d7f0ec11a53f8961192")).willReturn(optional);
+		given(userRepository.findById(id.toString())).willReturn(optional);
 		//when
-		userService.findUser("5dc99d7f0ec11a53f8961192");
+		userService.findUser(id.toString());
 	}
 	
 	@Test
 	public void saveTest() throws ConstraintsViolationException {
 		//given
+		ObjectId id = new ObjectId();
 		ZonedDateTime now = ZonedDateTime.now();
-		User userToCreate = new User("Rodolfo", "Saturnino", now);
-		User userCreated = new User("5dc99d7f0ec11a53f8961192", "Rodolfo", "Saturnino", now);
+		User userToCreate = new User("TestName", "TestLastName", now);
+		User userCreated = new User(id.toString(), "TestName", "TestLastName", now);
 		given(userRepository.save(userToCreate)).willReturn(userCreated);
 		//when
 		User userSaved = userService.save(userToCreate);
@@ -89,13 +94,14 @@ public class UserServiceTest {
 	@Test
 	public void updateTest() throws EntityNotFoundException {
 		//given
-		User user = new User("5dc99d7f0ec11a53f8961192", "Rodolfo", "Pereira", ZonedDateTime.now());
+		ObjectId id = new ObjectId();
+		User user = new User(id.toString(), "TestName", "TestLastName", ZonedDateTime.now());
 		Optional<User> optional = Optional.ofNullable(user);
-		User userAfterUpdate = new User("5dc99d7f0ec11a53f8961192", "Rodolfo", "Saturnino", ZonedDateTime.now());
-		given(userRepository.findById("5dc99d7f0ec11a53f8961192")).willReturn(optional);
+		User userAfterUpdate = new User(id.toString(), "NewTestName", "NewTestLastName", ZonedDateTime.now());
+		given(userRepository.findById(id.toString())).willReturn(optional);
 		given(userRepository.save(userAfterUpdate)).willReturn(userAfterUpdate);
 		//when
-		User newUser = userService.update("5dc99d7f0ec11a53f8961192", userAfterUpdate);
+		User newUser = userService.update(id.toString(), userAfterUpdate);
 		//then
 		assertThat(newUser).isEqualTo(userAfterUpdate);
 	}
@@ -103,10 +109,11 @@ public class UserServiceTest {
 	@Test(expected=EntityNotFoundException.class)
 	public void deleteTestWithException() throws EntityNotFoundException {
 		//given
+		ObjectId id = new ObjectId();
 		Optional<User> optional = Optional.empty();
-		given(userRepository.findById("5dc99d7f0ec11a53f8961192")).willReturn(optional);
+		given(userRepository.findById(id.toString())).willReturn(optional);
 		//when
-		userService.delete("5dc99d7f0ec11a53f8961192");
+		userService.delete(id.toString());
 	}
 	
 }

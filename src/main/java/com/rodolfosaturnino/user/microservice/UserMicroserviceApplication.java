@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -16,18 +18,29 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 public class UserMicroserviceApplication {
 
-	private static final Logger log = LoggerFactory.getLogger(UserMicroserviceApplication.class);
-	
+	private static final Logger log = LoggerFactory
+			.getLogger(UserMicroserviceApplication.class);
+
 	public static void main(String[] args) {
 		SpringApplication.run(UserMicroserviceApplication.class, args);
 	}
-	
+
 	@Bean
 	public Docket api() {
-		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.basePackage("com.rodolfosaturnino.user.microservice.controller"))
-				.paths(PathSelectors.regex("/.*"))
-				.build();
+		return new Docket(DocumentationType.SWAGGER_2)
+				.select()
+				.apis(RequestHandlerSelectors
+						.basePackage("com.rodolfosaturnino.user.microservice.controller"))
+				.paths(PathSelectors.regex("/.*")).build();
+	}
+
+	@Bean
+	public MessageSource messageSource() {
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+
+		messageSource.setBasename("classpath:messages");
+		messageSource.setDefaultEncoding("UTF-8");
+		return messageSource;
 	}
 
 }
